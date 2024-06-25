@@ -24,8 +24,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Back"
                 android:src="@drawable/icon_kembali"
-                android:contentDescription="Back"/>
+                tools:ignore="TouchTargetSizeCheck" />
 
             <!-- Sign Up Title -->
             <TextView
@@ -190,7 +191,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/edit_text_background"
+                android:background="@drawable/send_button_bg"
                 android:text="DAFTAR"
                 android:textColor="#FFFFFF"
                 android:padding="16dp"
