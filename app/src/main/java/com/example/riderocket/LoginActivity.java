@@ -3,6 +3,7 @@ package com.example.riderocket;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,9 +25,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText etNama, etPass;
+    private EditText etNama, etPass, etId;
     private Button btnLogin;
 
     @Override
@@ -38,6 +42,17 @@ public class LoginActivity extends AppCompatActivity {
         etNama = findViewById(R.id.namaEditText);
         etPass = findViewById(R.id.passwordEditText);
         btnLogin = findViewById(R.id.loginButton);
+
+        // cek user udh login apa blom
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String savedUsername = sharedPreferences.getString("username", null);
+        if (savedUsername != null) {
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            intent.putExtra("username", savedUsername);
+            intent.putExtra("id_user", sharedPreferences.getString("id_user", null));
+            startActivity(intent);
+            finish();
+        }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,11 +71,34 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String s) {
                             Log.d(TAG, "Response: " + s); // Log response untuk debugging
-                            if(s.trim().equals("Selamat Datang")){
-                                Toast.makeText(getApplicationContext(), "Login berhasil", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Login gagal: " + s, Toast.LENGTH_SHORT).show(); // Tampilkan respon server
+                            try {
+                                JSONObject jsonResponse = new JSONObject(s);
+                                String status = jsonResponse.getString("status");
+                                String message = jsonResponse.getString("message");
+
+                                if(status.equals("success")){
+                                    String userId = jsonResponse.getString("userId");
+                                    String email = jsonResponse.getString("email");
+                                    String no_telp = jsonResponse.getString("no_telp");
+                                    String alamat = jsonResponse.getString("alamat");
+                                    String userStatus = jsonResponse.getString("userStatus");
+                                    Toast.makeText(getApplicationContext(), "Login berhasil", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent (getApplicationContext(), HomeActivity.class);
+                                    //kirim data user
+                                    intent.putExtra("username", nama);
+                                    intent.putExtra("password", pass);
+                                    intent.putExtra("id_user", userId);
+                                    intent.putExtra("email", email);
+                                    intent.putExtra("no_telp", no_telp);
+                                    intent.putExtra("alamat", alamat);
+                                    intent.putExtra("status", userStatus);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Login gagal: " + s, Toast.LENGTH_SHORT).show(); // Tampilkan respon server
+                                }
+                            }catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }, new Response.ErrorListener() {

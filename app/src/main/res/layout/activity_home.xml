@@ -29,9 +29,16 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
+            android:backgroundTint="@color/white"
+            android:textColor="#FF5733"
             android:text="KELUAR"
-            android:background="@color/white"
-            android:textColor="#FF5733" />
+            android:drawableStart="@drawable/ic_logout"
+            android:padding="8dp"
+            android:elevation="0dp"
+            android:stateListAnimator="@null" />
+
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,10 +67,10 @@
 
 
             <TextView
+                android:id="@+id/welcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Hallo Ngab, Selamat Datang!"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold" />

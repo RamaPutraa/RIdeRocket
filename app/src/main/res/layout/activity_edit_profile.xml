@@ -43,6 +43,25 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        <!-- Hidden Status Field -->
+        <EditText
+            android:id="@+id/id_user"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"/>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"/>
+
+        <EditText
+            android:id="@+id/status"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"/>
+
         <!-- Full Name Label -->
         <TextView
             android:layout_width="wrap_content"
@@ -55,7 +74,7 @@
 
         <!-- Full Name Input -->
         <EditText
-            android:id="@+id/full_name"
+            android:id="@+id/nama"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -104,7 +123,7 @@
 
         <!-- Phone Number Input -->
         <EditText
-            android:id="@+id/phone_number"
+            android:id="@+id/no_telp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -129,7 +148,7 @@
 
         <!-- Address Input -->
         <EditText
-            android:id="@+id/address"
+            android:id="@+id/alamat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
