@@ -1,6 +1,9 @@
 package com.example.riderocket;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +35,7 @@ public class EditProfile extends AppCompatActivity {
 
     private String userId;
     private EditText etNama, etEmail, etNoTelp, etAlamat;
-    private Button btnUpdate;
+    private Button btnUpdate, btnHapusAkun;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class EditProfile extends AppCompatActivity {
         etNoTelp = findViewById(R.id.no_telp);
         etAlamat = findViewById(R.id.alamat);
         btnUpdate = findViewById(R.id.save_button);
+        btnHapusAkun = findViewById(R.id.hapus_akun);
 
         // Load profile data
         userId = getIntent().getStringExtra("id_user");
@@ -54,6 +58,13 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 updateProfile();
+            }
+        });
+
+        btnHapusAkun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDeleteAccount();
             }
         });
 
@@ -152,4 +163,70 @@ public class EditProfile extends AppCompatActivity {
 
         requestQueue.add(stringRequest);
     }
+
+    private void confirmDeleteAccount() {
+        new AlertDialog.Builder(this)
+                .setTitle("Hapus Akun")
+                .setMessage("Apakah Anda yakin ingin menghapus akun ini?")
+                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteAccount();
+                    }
+                })
+                .setNegativeButton("Tidak", null)
+                .show();
+    }
+
+    private void deleteAccount() {
+        String url = Db_connection.urlDeleteUser + userId;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("EditProfile", "Response: " + response);
+                if (response.isEmpty()) {
+                    Toast.makeText(EditProfile.this, response, Toast.LENGTH_SHORT).show();
+                } else {
+                    // Hapus data sesi pengguna dari SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear(); // Hapus semua data dalam SharedPreferences
+                    editor.apply();
+
+                    // Arahkan ke halaman login
+                    Intent intent = new Intent(EditProfile.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+
+                    // Tampilkan notifikasi bahwa akun berhasil dihapus
+                    Toast.makeText(EditProfile.this, "Akun berhasil dihapus", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("EditProfile", "Error: " + error.toString());
+                Toast.makeText(EditProfile.this, "Terjadi kesalahan saat menghapus akun. Silakan coba lagi.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        requestQueue.add(stringRequest);
+    }
+
+    private void logout() {
+        // Clear shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+        // Redirect to login activity
+        Intent intent = new Intent(EditProfile.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the activity stack
+        startActivity(intent);
+        finish();
+    }
+
 }

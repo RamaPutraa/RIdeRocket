@@ -7,4 +7,5 @@ public class Db_connection {
     public static final String urlRegister = "http://"+ip+"/riderocket/api_register.php";
     public static final String urlGetUser = "http://"+ip+"/riderocket/api_get.php?id_user=";
     public static final String urlUpdateUser = "http://"+ip+"/riderocket/api_update.php?id_user=";
+    public static final String urlDeleteUser = "http://"+ip+"/riderocket/api_delete.php?id_user=";
 }
