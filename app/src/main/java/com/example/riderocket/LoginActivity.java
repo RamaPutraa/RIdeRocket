@@ -30,7 +30,7 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText etNama, etPass, etId;
+    private EditText etNama, etPass;
     private Button btnLogin;
 
     @Override
@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         etPass = findViewById(R.id.passwordEditText);
         btnLogin = findViewById(R.id.loginButton);
 
-        // cek user udh login apa blom
+        // cek user sudah login atau belum
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         String savedUsername = sharedPreferences.getString("username", null);
         if (savedUsername != null) {
@@ -61,8 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                 String nama = etNama.getText().toString();
                 String pass = etPass.getText().toString();
 
-
-                if(!(nama.isEmpty() || pass.isEmpty())){
+                if (!(nama.isEmpty() || pass.isEmpty())) {
                     String url = Db_connection.urlLogin + "?nama=" + nama + "&password=" + pass;
                     Log.d(TAG, "URL: " + url); // Log URL untuk debugging
 
@@ -76,15 +75,22 @@ public class LoginActivity extends AppCompatActivity {
                                 String status = jsonResponse.getString("status");
                                 String message = jsonResponse.getString("message");
 
-                                if(status.equals("success")){
+                                if (status.equals("success")) {
                                     String userId = jsonResponse.getString("userId");
                                     String email = jsonResponse.getString("email");
                                     String no_telp = jsonResponse.getString("no_telp");
                                     String alamat = jsonResponse.getString("alamat");
                                     String userStatus = jsonResponse.getString("userStatus");
+
+                                    // Simpan username dan id_user ke SharedPreferences
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("username", nama);
+                                    editor.putString("id_user", userId);
+                                    editor.apply();
+
                                     Toast.makeText(getApplicationContext(), "Login berhasil", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent (getApplicationContext(), HomeActivity.class);
-                                    //kirim data user
+                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                    // kirim data user
                                     intent.putExtra("username", nama);
                                     intent.putExtra("password", pass);
                                     intent.putExtra("id_user", userId);
@@ -93,10 +99,11 @@ public class LoginActivity extends AppCompatActivity {
                                     intent.putExtra("alamat", alamat);
                                     intent.putExtra("status", userStatus);
                                     startActivity(intent);
+                                    finish(); // Tutup LoginActivity setelah login berhasil
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Login gagal: " + s, Toast.LENGTH_SHORT).show(); // Tampilkan respon server
+                                    Toast.makeText(getApplicationContext(), "Login gagal: " + message, Toast.LENGTH_SHORT).show(); // Tampilkan respon server
                                 }
-                            }catch (JSONException e) {
+                            } catch (JSONException e) {
                                 e.printStackTrace();
                                 Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -109,9 +116,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
                     requestQueue.add(stringRequest);
-
-                }else{
-                    Toast.makeText(getApplicationContext(), "Password/Email Salah", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Nama atau Password tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -119,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
         TextView buttonDaftar = findViewById(R.id.buttonDaftar);
         buttonDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
@@ -131,5 +137,4 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
     }
-
 }

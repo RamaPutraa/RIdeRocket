@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".RiwayatActivity"
+            android:exported="false" />
+        <activity
             android:name=".DetailMotorActivity"
             android:exported="false" />
         <activity

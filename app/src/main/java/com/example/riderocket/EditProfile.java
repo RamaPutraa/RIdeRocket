@@ -136,6 +136,13 @@ public class EditProfile extends AppCompatActivity {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("new_username", nama);
                     setResult(RESULT_OK, resultIntent);
+
+                    // Update username in SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("username", nama);
+                    editor.apply();
+
                     finish();
                 } else {
                     Toast.makeText(EditProfile.this, response, Toast.LENGTH_SHORT).show();
@@ -214,19 +221,4 @@ public class EditProfile extends AppCompatActivity {
 
         requestQueue.add(stringRequest);
     }
-
-    private void logout() {
-        // Clear shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
-
-        // Redirect to login activity
-        Intent intent = new Intent(EditProfile.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the activity stack
-        startActivity(intent);
-        finish();
-    }
-
 }

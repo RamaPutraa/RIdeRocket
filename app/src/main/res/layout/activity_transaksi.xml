@@ -7,4 +7,150 @@
     android:layout_height="match_parent"
     tools:context=".TransaksiActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:padding="16dp">
+
+        <!-- Tombol Kembali -->
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/back_bg"
+            android:contentDescription="Back"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <!-- Nama Penyewa -->
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/back_button"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@id/back_button"
+            android:text="Form Sewa"
+            android:textColor="#333333"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Hidden Status Field -->
+        <EditText
+            android:id="@+id/id_penyewa"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"/>
+
+        <EditText
+            android:id="@+id/input_nama_penyewa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_title"
+            android:layout_marginTop="32dp"
+            android:hint="Nama Penyewa"
+            android:padding="16dp"
+            android:background="@drawable/edit_text_background"
+            android:inputType="textPersonName" />
+
+        <!-- Nama Sepeda Motor -->
+        <EditText
+            android:id="@+id/input_nama_motor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/input_nama_penyewa"
+            android:layout_marginTop="16dp"
+            android:hint="Nama Sepeda Motor"
+            android:padding="16dp"
+            android:background="@drawable/edit_text_background"
+            android:inputType="text" />
+
+        <!-- Alamat -->
+        <EditText
+            android:id="@+id/input_alamat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/input_nama_motor"
+            android:layout_marginTop="16dp"
+            android:hint="Alamat"
+            android:padding="16dp"
+            android:background="@drawable/edit_text_background"
+            android:inputType="textMultiLine"
+            android:minLines="3" />
+
+        <!-- Tanggal Sewa dan Kembali -->
+        <LinearLayout
+            android:id="@+id/linear_layout_dates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/input_alamat"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/input_tanggal_sewa"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Tanggal Sewa"
+                android:padding="16dp"
+                android:background="@drawable/edit_text_background"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none" />
+
+            <Space
+                android:layout_width="16dp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/input_tanggal_kembali"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Tanggal Kembali"
+                android:padding="16dp"
+                android:background="@drawable/edit_text_background"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none" />
+        </LinearLayout>
+
+        <!-- Harga -->
+        <EditText
+            android:id="@+id/input_harga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linear_layout_dates"
+            android:layout_marginTop="16dp"
+            android:hint="Harga"
+            android:padding="16dp"
+            android:background="@drawable/edit_text_background"
+            android:inputType="numberDecimal" />
+
+        <!-- Tombol Simpan -->
+        <Button
+            android:id="@+id/button_simpan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/send_button_bg"
+            android:text="Simpan"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="true"
+            android:padding="16dp" />
+
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,8 +6,10 @@ public class Motor {
     private int tahunPembuatan;
     private String transmisi;
     private int hargaSewa;
+    private int id;
 
-    public Motor(String namaMotor, String deskripsi, int tahunPembuatan, String transmisi, int hargaSewa) {
+    public Motor(int id, String namaMotor, String deskripsi, int tahunPembuatan, String transmisi, int hargaSewa) {
+        this.id = id;
         this.namaMotor = namaMotor;
         this.deskripsi = deskripsi;
         this.tahunPembuatan = tahunPembuatan;
@@ -17,6 +19,9 @@ public class Motor {
 
     public String getNamaMotor() {
         return namaMotor;
+    }
+    public int getId() {
+        return id;
     }
 
     public String getDeskripsi() {

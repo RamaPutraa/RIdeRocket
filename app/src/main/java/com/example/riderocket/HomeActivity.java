@@ -32,7 +32,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class HomeActivity extends AppCompatActivity {
 
     private static final int REQUEST_EDIT_PROFILE = 1;
@@ -52,16 +51,22 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         motorList = new ArrayList<>();
-        motorAdapter = new MotorAdapter(motorList);
+        motorAdapter = new MotorAdapter(motorList, this);
         recyclerView.setAdapter(motorAdapter);
 
         new FetchMotorsTask().execute();
 
-        String username = getIntent().getStringExtra("username");
-        id_user = getIntent().getStringExtra("id_user");
+        // Ambil username dan id_user dari SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", null);
+        id_user = sharedPreferences.getString("id_user", null);
 
         welcomeText = findViewById(R.id.welcome);
-        welcomeText.setText("Hallo " + username + ", Selamat Datang!");
+        if (username != null) {
+            welcomeText.setText("Hallo " + username + ", Selamat Datang!");
+        } else {
+            welcomeText.setText("Hallo, Selamat Datang!");
+        }
 
         ImageView buttonEdit = findViewById(R.id.edit_icon);
         buttonEdit.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +86,16 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        Button buttonHistory = findViewById(R.id.button_history);
+        buttonHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, RiwayatActivity.class);
+                intent.putExtra("id_penyewa", Integer.parseInt(id_user));
+                startActivity(intent);
+            }
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -94,9 +109,33 @@ public class HomeActivity extends AppCompatActivity {
         if (requestCode == REQUEST_EDIT_PROFILE && resultCode == RESULT_OK) {
             if (data != null && data.hasExtra("new_username")) {
                 String newUsername = data.getStringExtra("new_username");
-                welcomeText.setText("Hallo " + newUsername + ", Selamat Datang!");
+                updateUsername(newUsername);
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Update username saat kembali ke aktivitas ini
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", null);
+        if (username != null) {
+            welcomeText.setText("Hallo " + username + ", Selamat Datang!");
+        } else {
+            welcomeText.setText("Hallo, Selamat Datang!");
+        }
+    }
+
+    private void updateUsername(String newUsername) {
+        // Update username in SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", newUsername);
+        editor.apply();
+
+        // Update welcome text
+        welcomeText.setText("Hallo " + newUsername + ", Selamat Datang!");
     }
 
     private void showLogoutConfirmationDialog() {
@@ -164,12 +203,13 @@ public class HomeActivity extends AppCompatActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         String namaMotor = jsonObject.getString("nama_motor");
+                        int id = jsonObject.getInt("id_motor");
                         String deskripsi = jsonObject.getString("deskripsi");
                         int tahunPembuatan = jsonObject.getInt("tahun_pembuatan");
                         String transmisi = jsonObject.getString("transmisi");
                         int hargaSewa = jsonObject.getInt("harga_sewa");
 
-                        Motor motor = new Motor(namaMotor, deskripsi, tahunPembuatan, transmisi, hargaSewa);
+                        Motor motor = new Motor(id, namaMotor, deskripsi, tahunPembuatan, transmisi, hargaSewa);
                         motorList.add(motor);
                     }
 
