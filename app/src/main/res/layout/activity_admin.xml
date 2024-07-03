@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#fff">
+    tools:context=".AdminActivity">
 
     <!-- Header Section -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/header"
+        android:layout_width="0dp"
         android:layout_height="250dp"
         android:background="@drawable/rounded_orange_bg"
         android:orientation="vertical"
         android:gravity="center"
         android:padding="16dp"
-        android:elevation="1dp">
+        android:elevation="1dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
             android:layout_width="125dp"
@@ -21,48 +27,60 @@
             android:src="@drawable/logo_with_bg"
             android:contentDescription="Logo" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_no_shadow"
+            android:layout_marginTop="12dp" />
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Selamat Datang Di Menu Admin!"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginTop="12dp"/>
     </LinearLayout>
 
-    <!-- Menu Items Section -->
+    <!-- Admin Options -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/menu_utama"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginBottom="35dp"
-        android:orientation="vertical">
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:background="@drawable/admin_button_bg"
+            android:clickable="true"
             android:elevation="2dp"
+            android:focusable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/daftar_user">
+            android:padding="16dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:contentDescription="User Icon"
-                android:src="@drawable/ic_user" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_user"
+                android:contentDescription="User Icon" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_weight="1"
                 android:text="Daftar User"
                 android:textColor="#000000" />
         </LinearLayout>
@@ -72,24 +90,24 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:background="@drawable/admin_button_bg"
+            android:clickable="true"
             android:elevation="2dp"
+            android:focusable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/daftar_motor">
+            android:padding="16dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:contentDescription="Motor Icon"
-                android:src="@drawable/ic_motor" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_motor"
+                android:contentDescription="Motor Icon" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_weight="1"
                 android:text="Daftar Motor"
                 android:textColor="#000000" />
         </LinearLayout>
@@ -99,81 +117,64 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:background="@drawable/admin_button_bg"
+            android:clickable="true"
             android:elevation="2dp"
+            android:focusable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/daftar_motor_yang_disewa">
+            android:padding="16dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:contentDescription="Rented Motor Icon"
-                android:src="@drawable/ic_rented_motor" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_rented_motor"
+                android:contentDescription="Rented Motor Icon" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_weight="1"
                 android:text="Daftar Motor yang Disewa"
                 android:textColor="#000000" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:background="@drawable/admin_button_bg"
-            android:elevation="2dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/ulasan_pengguna">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:contentDescription="Reviews Icon"
-                android:src="@drawable/ic_reviews" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Ulasan Pengguna"
-                android:textColor="#000000" />
-        </LinearLayout>
     </LinearLayout>
 
-    <!-- Logout Section -->
+    <!-- Logout Button -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/keluar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="110dp"
         android:background="@drawable/admin_button_bg"
-        android:padding="16dp"
-        android:gravity="center_vertical"
-        android:layout_margin="16dp"
         android:clickable="true"
-        android:focusable="true"
         android:elevation="2dp"
-        android:id="@+id/keluar">
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.448"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menu_utama">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:contentDescription="Logout Icon"
             android:src="@drawable/ic_logout" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_weight="1"
             android:text="Keluar"
             android:textColor="#000000" />
     </LinearLayout>
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

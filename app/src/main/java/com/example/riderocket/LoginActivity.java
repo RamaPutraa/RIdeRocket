@@ -47,7 +47,13 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         String savedUsername = sharedPreferences.getString("username", null);
         if (savedUsername != null) {
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            String userStatus = sharedPreferences.getString("userStatus", "customer");
+            Intent intent;
+            if ("admin".equalsIgnoreCase(userStatus)) {
+                intent = new Intent(LoginActivity.this, AdminActivity.class);
+            } else {
+                intent = new Intent(LoginActivity.this, HomeActivity.class);
+            }
             intent.putExtra("username", savedUsername);
             intent.putExtra("id_user", sharedPreferences.getString("id_user", null));
             startActivity(intent);
@@ -86,10 +92,18 @@ public class LoginActivity extends AppCompatActivity {
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putString("username", nama);
                                     editor.putString("id_user", userId);
+                                    editor.putString("userStatus", userStatus);
                                     editor.apply();
 
                                     Toast.makeText(getApplicationContext(), "Login berhasil", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+
+                                    Intent intent;
+                                    if ("admin".equalsIgnoreCase(userStatus)) {
+                                        intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                    } else {
+                                        intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                    }
+
                                     // kirim data user
                                     intent.putExtra("username", nama);
                                     intent.putExtra("password", pass);
