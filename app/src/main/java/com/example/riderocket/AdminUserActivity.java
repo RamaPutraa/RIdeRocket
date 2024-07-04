@@ -74,35 +74,35 @@ public class AdminUserActivity extends AppCompatActivity {
         String url = Db_connection.urlGetAllUser; // Ganti dengan URL API Anda
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        userList.clear();
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                JSONObject jsonObject = response.getJSONObject(i);
-                                String idUser = jsonObject.getString("id_user");
-                                String nama = jsonObject.getString("nama");
-                                String email = jsonObject.getString("email");
-                                String noTelp = jsonObject.getString("no_telp");
-                                String alamat = jsonObject.getString("alamat");
-                                String status = jsonObject.getString("status");
-                                String password = jsonObject.getString("password");
-                                userList.add(new User(idUser, nama, email, noTelp, alamat, status, password));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+            Request.Method.GET, url, null,
+            new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    userList.clear();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            String idUser = jsonObject.getString("id_user");
+                            String nama = jsonObject.getString("nama");
+                            String email = jsonObject.getString("email");
+                            String noTelp = jsonObject.getString("no_telp");
+                            String alamat = jsonObject.getString("alamat");
+                            String status = jsonObject.getString("status");
+                            String password = jsonObject.getString("password");
+                            userList.add(new User(idUser, nama, email, noTelp, alamat, status, password));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        userAdapter.notifyDataSetChanged();
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AdminUserActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                    userAdapter.notifyDataSetChanged();
                 }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(AdminUserActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
         );
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -152,22 +152,22 @@ public class AdminUserActivity extends AppCompatActivity {
         String url = Db_connection.urlAdminUpdateUser + idUser;
 
         StringRequest stringRequest = new StringRequest(
-                Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("API Response", response);
-                        Toast.makeText(AdminUserActivity.this, "User updated successfully", Toast.LENGTH_SHORT).show();
-                        fetchUsers(); // Refresh the user list
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("API Error", error.toString());
-                        Toast.makeText(AdminUserActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }) {
+            Request.Method.POST, url,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d("API Response", response);
+                    Toast.makeText(AdminUserActivity.this, "User updated successfully", Toast.LENGTH_SHORT).show();
+                    fetchUsers(); // Refresh the user list
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("API Error", error.toString());
+                    Toast.makeText(AdminUserActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -212,22 +212,102 @@ public class AdminUserActivity extends AppCompatActivity {
         String url = Db_connection.urlDeleteUser + idUser;
 
         StringRequest stringRequest = new StringRequest(
-                Request.Method.DELETE, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("API Response", response);
-                        Toast.makeText(AdminUserActivity.this, "User deleted successfully", Toast.LENGTH_SHORT).show();
-                        fetchUsers(); // Refresh the user list
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("API Error", error.toString());
-                        Toast.makeText(AdminUserActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+            Request.Method.DELETE, url,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d("API Response", response);
+                    Toast.makeText(AdminUserActivity.this, "User deleted successfully", Toast.LENGTH_SHORT).show();
+                    fetchUsers(); // Refresh the user list
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("API Error", error.toString());
+                    Toast.makeText(AdminUserActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void showAddUserDialog() {
+        // Buat dialog builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // Inflate layout custom untuk dialog
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.tambah_user_dialog, null);
+        builder.setView(dialogView);
+
+        // Dapatkan referensi ke view di dialog
+        EditText etNama = dialogView.findViewById(R.id.etNama);
+        EditText etEmail = dialogView.findViewById(R.id.etEmail);
+        EditText etNoTelp = dialogView.findViewById(R.id.etNoTelp);
+        EditText etPassword = dialogView.findViewById(R.id.etPassword);
+        EditText etAlamat = dialogView.findViewById(R.id.etAlamat);
+        EditText etStatus = dialogView.findViewById(R.id.etStatus);
+        Button btnSimpan = dialogView.findViewById(R.id.btnSimpan);
+
+        // Buat dan tampilkan dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Tombol simpan di dialog
+        btnSimpan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ambil data dari EditText
+                String nama = etNama.getText().toString();
+                String email = etEmail.getText().toString();
+                String noTelp = etNoTelp.getText().toString();
+                String password = etPassword.getText().toString();
+                String alamat = etAlamat.getText().toString();
+                String status = etStatus.getText().toString();
+
+                // Validasi input
+                if (!nama.isEmpty() && !email.isEmpty() && !noTelp.isEmpty() && !password.isEmpty() && !alamat.isEmpty() && !status.isEmpty()) {
+                    // Panggil metode untuk menyimpan data
+                    addUser(nama, email, noTelp, password, alamat, status);
+                    dialog.dismiss(); // Tutup dialog setelah menyimpan
+                } else {
+                    Toast.makeText(AdminUserActivity.this, "Semua data harus diisi lengkap!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void addUser(String nama, String email, String noTelp, String password, String alamat, String status) {
+        String url = Db_connection.urlRegister; // Ganti dengan URL API Anda
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(AdminUserActivity.this, "User berhasil ditambahkan", Toast.LENGTH_SHORT).show();
+                    fetchUsers(); // Refresh list user setelah penambahan
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(AdminUserActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("nama", nama);
+                params.put("email", email);
+                params.put("no_telp", noTelp);
+                params.put("password", password);
+                params.put("alamat", alamat);
+                params.put("status", status);
+                return params;
+            }
+        };
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);

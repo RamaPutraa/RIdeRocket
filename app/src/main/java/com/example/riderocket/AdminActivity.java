@@ -68,16 +68,16 @@ public class AdminActivity extends AppCompatActivity {
     }
     private void showLogoutConfirmationDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Konfirmasi Logout")
-                .setMessage("Apakah Anda yakin ingin logout?")
-                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        logout();
-                    }
-                })
-                .setNegativeButton("Tidak", null)
-                .show();
+            .setTitle("Konfirmasi Logout")
+            .setMessage("Apakah Anda yakin ingin logout?")
+            .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    logout();
+                }
+            })
+            .setNegativeButton("Tidak", null)
+            .show();
     }
 
     private void logout() {
