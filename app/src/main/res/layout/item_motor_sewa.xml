@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_motor"
+        android:padding="8dp"/>
+
+    <TextView
+        android:id="@+id/tvNamaMotor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nama Motor"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_toEndOf="@id/ivProfile"
+        android:layout_marginStart="16dp"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/tvNamaPenyewa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nama Penyewa"
+        android:textSize="14sp"
+        android:layout_below="@id/tvNamaMotor"
+        android:layout_alignStart="@id/tvNamaMotor"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/tvTglKembali"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tanggal Pengembalian : 24-09-2024"
+        android:textSize="12sp"
+        android:layout_below="@id/tvNamaPenyewa"
+        android:layout_alignStart="@id/tvNamaMotor"
+        android:layout_marginTop="4dp"/>
+</RelativeLayout>
