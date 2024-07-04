@@ -41,15 +41,15 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
-//        // Listener untuk membuka Daftar User
-//        LinearLayout daftarMotor = findViewById(R.id.daftar_motor_button);
-//        daftarMotor.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(AdminActivity.this, AdminDaftarMotorActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        // Listener untuk membuka Daftar User
+        LinearLayout daftarMotor = findViewById(R.id.daftar_motor_button);
+        daftarMotor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, AdminMotorActivity.class);
+                startActivity(intent);
+            }
+        });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
