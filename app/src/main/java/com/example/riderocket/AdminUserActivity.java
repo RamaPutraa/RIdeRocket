@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -61,6 +62,9 @@ public class AdminUserActivity extends AppCompatActivity {
         recyclerViewUsers.setAdapter(userAdapter);
 
         fetchUsers();
+
+        ImageButton addButton = findViewById(R.id.tambah);
+        addButton.setOnClickListener(v -> showAddUserDialog());
 
         ImageButton backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
@@ -224,6 +228,86 @@ public class AdminUserActivity extends AppCompatActivity {
                         Toast.makeText(AdminUserActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void showAddUserDialog() {
+        // Buat dialog builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // Inflate layout custom untuk dialog
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.tambah_user_dialog, null);
+        builder.setView(dialogView);
+
+        // Dapatkan referensi ke view di dialog
+        EditText etNama = dialogView.findViewById(R.id.etNama);
+        EditText etEmail = dialogView.findViewById(R.id.etEmail);
+        EditText etNoTelp = dialogView.findViewById(R.id.etNoTelp);
+        EditText etPassword = dialogView.findViewById(R.id.etPassword);
+        EditText etAlamat = dialogView.findViewById(R.id.etAlamat);
+        EditText etStatus = dialogView.findViewById(R.id.etStatus);
+        Button btnSimpan = dialogView.findViewById(R.id.btnSimpan);
+
+        // Buat dan tampilkan dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Tombol simpan di dialog
+        btnSimpan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ambil data dari EditText
+                String nama = etNama.getText().toString();
+                String email = etEmail.getText().toString();
+                String noTelp = etNoTelp.getText().toString();
+                String password = etPassword.getText().toString();
+                String alamat = etAlamat.getText().toString();
+                String status = etStatus.getText().toString();
+
+                // Validasi input
+                if (!nama.isEmpty() && !email.isEmpty() && !noTelp.isEmpty() && !password.isEmpty() && !alamat.isEmpty() && !status.isEmpty()) {
+                    // Panggil metode untuk menyimpan data
+                    addUser(nama, email, noTelp, password, alamat, status);
+                    dialog.dismiss(); // Tutup dialog setelah menyimpan
+                } else {
+                    Toast.makeText(AdminUserActivity.this, "Semua data harus diisi lengkap!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void addUser(String nama, String email, String noTelp, String password, String alamat, String status) {
+        String url = Db_connection.urlRegister; // Ganti dengan URL API Anda
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(AdminUserActivity.this, "User berhasil ditambahkan", Toast.LENGTH_SHORT).show();
+                        fetchUsers(); // Refresh list user setelah penambahan
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(AdminUserActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("nama", nama);
+                params.put("email", email);
+                params.put("no_telp", noTelp);
+                params.put("password", password);
+                params.put("alamat", alamat);
+                params.put("status", status);
+                return params;
+            }
+        };
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);

@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".DaftarSewaActivity"
+            android:exported="false" />
+        <activity
             android:name=".AdminMotorActivity"
             android:exported="false" />
         <activity

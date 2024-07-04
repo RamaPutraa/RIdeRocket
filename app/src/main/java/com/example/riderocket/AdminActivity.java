@@ -51,6 +51,15 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
+        LinearLayout daftarSewa = findViewById(R.id.daftar_sewa_button);
+        daftarSewa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, DaftarSewaActivity.class);
+                startActivity(intent);
+            }
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
